@@ -19,12 +19,9 @@ jobs:
           distribution: temurin
           cache: gradle
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Prepare local.properties
         run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
           echo "SIGNING_STORE_PASSWORD=dummy" >> local.properties
           echo "SIGNING_KEY_ALIAS=dummy" >> local.properties
           echo "SIGNING_KEY_PASSWORD=dummy" >> local.properties
