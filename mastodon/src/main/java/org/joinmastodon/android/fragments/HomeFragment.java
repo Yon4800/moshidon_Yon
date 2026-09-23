@@ -20,6 +20,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.PushNotificationReceiver;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.notifications.GetNotificationsV1;
@@ -27,6 +28,7 @@ import org.joinmastodon.android.api.requests.notifications.GetUnreadNotification
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.NotificationsMarkerUpdatedEvent;
+import org.joinmastodon.android.events.SearchTabVisibilityChangedEvent;
 import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
 import org.joinmastodon.android.fragments.onboarding.OnboardingFollowSuggestionsFragment;
@@ -155,6 +157,7 @@ public class HomeFragment extends AppKitFragment implements AssistContentProvide
 			}
 		}
 		tabBar.selectTab(currentTab);
+		updateSearchTabVisibility();
 
 		return content;
 	}
@@ -405,6 +408,24 @@ public class HomeFragment extends AppKitFragment implements AssistContentProvide
 //			homeTabFragment.rebuildAllDisplayItems();
 		if(notificationsFragment.loaded)
 			notificationsFragment.rebuildAllDisplayItems();
+	}
+
+	private void updateSearchTabVisibility(){
+		if(tabBar==null)
+			return;
+		View searchTab=tabBar.findViewById(R.id.tab_search);
+		if(searchTab==null)
+			return;
+		boolean visible=GlobalUserPreferences.showSearchTab;
+		searchTab.setVisibility(visible ? View.VISIBLE : View.GONE);
+		if(!visible && currentTab==R.id.tab_search){
+			setCurrentTab(R.id.tab_home);
+		}
+	}
+
+	@Subscribe
+	public void onSearchTabVisibilityChanged(SearchTabVisibilityChangedEvent ev){
+		updateSearchTabVisibility();
 	}
 
 	@Override

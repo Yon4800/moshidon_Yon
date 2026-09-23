@@ -17,6 +17,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.SearchTabVisibilityChangedEvent;
 import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
 import org.joinmastodon.android.model.viewmodel.CheckableListItem;
 import org.joinmastodon.android.model.viewmodel.ListItem;
@@ -34,7 +35,7 @@ import me.grishka.appkit.FragmentStackActivity;
 public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private ImageView themeTransitionWindowView;
 	private ListItem<Void> themeItem;
-	private CheckableListItem<Void> showCWsItem, hideSensitiveMediaItem, interactionCountsItem, emojiInNamesItem, dynamicColorsItem;
+	private CheckableListItem<Void> showCWsItem, hideSensitiveMediaItem, interactionCountsItem, emojiInNamesItem, dynamicColorsItem, showSearchTabItem;
 
 	// MOSHIDON:
 	private ListItem<Void> colorItem;
@@ -70,6 +71,12 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		items.add(hideSensitiveMediaItem=new CheckableListItem<>(R.string.settings_hide_sensitive_media, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.hideSensitiveMedia, R.drawable.ic_no_adult_content_24px, this::toggleCheckableItem));
 		items.add(interactionCountsItem=new CheckableListItem<>(R.string.settings_show_interaction_counts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showInteractionCounts, R.drawable.ic_social_leaderboard_24px, this::toggleCheckableItem));
 		items.add(emojiInNamesItem=new CheckableListItem<>(R.string.settings_show_emoji_in_names, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.customEmojiInNames, R.drawable.ic_emoticon_24px, this::toggleCheckableItem));
+		items.add(showSearchTabItem=new CheckableListItem<>(R.string.mo_settings_show_search_tab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showSearchTab, R.drawable.ic_fluent_search_24_regular, item->{
+			toggleCheckableItem(item);
+			GlobalUserPreferences.showSearchTab=showSearchTabItem.checked;
+			GlobalUserPreferences.save();
+			E.post(new SearchTabVisibilityChangedEvent());
+		}));
 		onDataLoaded(items);
 	}
 
@@ -93,8 +100,10 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.hideSensitiveMedia=hideSensitiveMediaItem.checked;
 		GlobalUserPreferences.showInteractionCounts=interactionCountsItem.checked;
 		GlobalUserPreferences.customEmojiInNames=emojiInNamesItem.checked;
+		GlobalUserPreferences.showSearchTab=showSearchTabItem.checked;
 		GlobalUserPreferences.save();
 		E.post(new StatusDisplaySettingsChangedEvent(accountID));
+		E.post(new SearchTabVisibilityChangedEvent());
 	}
 
 	private int getAppearanceValue(){

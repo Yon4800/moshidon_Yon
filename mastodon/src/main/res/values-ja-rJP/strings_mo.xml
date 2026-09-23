@@ -71,4 +71,5 @@
     <string name="mo_notification_action_replied">%s さんの投稿への返信に成功しました</string>
     <string name="mo_load_remote_followers">リモートプロフィールのフォローとフォロワーを読み込む</string>
     <string name="mo_color_palette_black_and_white">白黒</string>
+    <string name="mo_settings_show_search_tab">検索タブを表示</string>
 </resources>

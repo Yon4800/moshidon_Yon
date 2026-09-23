@@ -47,6 +47,7 @@ public class GlobalUserPreferences{
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static boolean disableM3PillActiveIndicator;
 	public static boolean showNavigationLabels;
+	public static boolean showSearchTab;
 	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
 	public static boolean overlayMedia;
 	public static boolean showSuicideHelp;
@@ -112,6 +113,7 @@ public class GlobalUserPreferences{
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
 		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
+		showSearchTab=prefs.getBoolean("showSearchTab", true);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
 		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
@@ -188,6 +190,7 @@ public class GlobalUserPreferences{
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
 				.putBoolean("showNavigationLabels", showNavigationLabels)
+				.putBoolean("showSearchTab", showSearchTab)
 				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)
 				.putBoolean("displayPronounsInThreads", displayPronounsInThreads)
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
